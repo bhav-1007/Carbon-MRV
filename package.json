@@ -1,0 +1,11 @@
+{
+  "name": "institutional-carbon-mrv",
+  "version": "0.1.0",
+  "private": true,
+  "description": "AI-based institutional carbon footprint monitoring platform for SIH IH-45.",
+  "scripts": {
+    "dev": "node scripts/dev.mjs",
+    "seed": "npm --prefix backend run seed",
+    "install:all": "npm install --prefix backend && npm install --prefix frontend"
+  }
+}

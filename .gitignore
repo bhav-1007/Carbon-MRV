@@ -1,0 +1,10 @@
+node_modules/
+dist/
+build/
+.env
+uploads/
+*.log
+__pycache__/
+.pytest_cache/
+.venv/
+work/npm-cache/
