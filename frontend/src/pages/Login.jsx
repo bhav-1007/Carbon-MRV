@@ -15,7 +15,7 @@ export function Login() {
       await login(form.email, form.password);
       navigate("/");
     } catch (err) {
-      setError(err.response?.data?.error?.message || "Login failed");
+      setError(err.response?.data?.error?.message || err.message || "Login failed");
     }
   }
 

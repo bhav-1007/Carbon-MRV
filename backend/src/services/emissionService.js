@@ -74,6 +74,7 @@ export async function createEmissionRecord(activity, region = "IN") {
 }
 
 export async function recalculateOrganization(organizationId, region = "IN") {
+  await EmissionRecord.deleteMany({ organizationId });
   const logs = await ActivityLog.find({ organizationId }).sort({ date: 1 });
   const records = [];
   for (const log of logs) {

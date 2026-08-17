@@ -1,6 +1,6 @@
-# 🌱 Carbon-MRV — Carbon Accounting Dashboard
+# Carbon-MRV - Carbon Accounting Dashboard
 
-A carbon accounting dashboard for institutions. Colleges and campuses can log activity data — electricity usage, transport fuel, waste generated — and the platform converts it into emissions, visualizes it, generates reports, and recommends ways to cut the institution's carbon footprint.
+A carbon accounting dashboard for institutions. Colleges and campuses can log activity data - electricity usage, transport fuel, waste generated - and the platform converts it into emissions, visualizes it, generates reports, and recommends ways to cut the institution's carbon footprint.
 
 > **In one line:** Collect carbon activity data, convert it into verified emissions, visualize it, compare departments, generate reports, and get AI-assisted recommendations to reduce emissions.
 
@@ -68,10 +68,10 @@ Access is enforced via JWT-based role checks on every protected route.
 ## How It Works
 
 1. The institution logs in.
-2. Users enter activity data — electricity, fuel, transport, waste.
+2. Users enter activity data - electricity, fuel, transport, waste.
 3. The app calculates carbon emissions from that activity.
 4. The dashboard shows total emissions, Scope 1/2/3 breakdowns, monthly trends, and department comparisons.
-5. The app suggests reductions — solar panels, better bus routing, LED lighting, composting.
+5. The app suggests reductions - solar panels, better bus routing, LED lighting, composting.
 6. Reports can be exported as PDFs.
 7. Departments are ranked on a leaderboard.
 8. An in-app assistant answers natural-language questions about the data.
@@ -163,29 +163,40 @@ pip install -r requirements.txt
 
 ### Environment Variables
 
-Create a `.env` file in the backend with values such as:
+Copy the examples and edit values as needed:
 
-```env
-MONGODB_URI=your_mongodb_atlas_uri
-JWT_SECRET=your_jwt_secret
-PORT=5000
-ML_SERVICE_URL=http://localhost:8000
+```bash
+cp backend/.env.example backend/.env
+cp frontend/.env.example frontend/.env
 ```
+
+The backend also reads the repository-root `.env` file for convenience. The Mongo variable used by the code is `MONGO_URI`.
 
 ### Run Locally
 
 ```bash
-# Backend
-cd backend
-npm run dev
+# Install everything
+npm run install:all
 
-# Frontend
-cd frontend
-npm run dev
+# Seed demo data after MongoDB is reachable
+npm run seed
 
-# ML service (optional — backend falls back gracefully if not running)
-cd ml-service
-uvicorn main:app --reload
+# Start backend + frontend; ML is optional
+npm run dev
+```
+
+Default local URLs:
+
+| Service | URL |
+|---|---|
+| Frontend | `http://localhost:5173` |
+| Backend API | `http://localhost:5000/api/v1` |
+| Health check | `http://localhost:5000/health` |
+
+Seeded login:
+
+```text
+admin@sih.local / Password123
 ```
 
 ---

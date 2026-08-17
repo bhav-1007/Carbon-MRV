@@ -4,7 +4,14 @@ import { env } from "./config/env.js";
 
 connectDb()
   .then(() => {
-    app.listen(env.port, () => console.log(`API listening on ${env.port}`));
+    const server = app.listen(env.port, () => console.log(`API listening on ${env.port}`));
+    server.on("error", (err) => {
+      if (err.code === "EADDRINUSE") {
+        console.error(`API port ${env.port} is already in use. Stop the existing backend before starting another one.`);
+        process.exit(1);
+      }
+      throw err;
+    });
   })
   .catch((err) => {
     console.error("Failed to start API", err);

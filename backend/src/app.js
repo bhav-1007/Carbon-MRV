@@ -3,8 +3,8 @@ import express from "express";
 import helmet from "helmet";
 import morgan from "morgan";
 import rateLimit from "express-rate-limit";
-import path from "path";
 import { env } from "./config/env.js";
+import { paths } from "./config/paths.js";
 import { errorHandler } from "./middleware/errorHandler.js";
 import { authRoutes } from "./routes/authRoutes.js";
 import { activityRoutes } from "./routes/activityRoutes.js";
@@ -17,7 +17,20 @@ export const app = express();
 
 app.set("etag", false);
 app.use(helmet());
-app.use(cors({ origin: env.frontendOrigin, credentials: true }));
+app.use(cors({
+  origin(origin, callback) {
+    if (!origin || env.frontendOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+
+    if (env.nodeEnv !== "production" && /^http:\/\/(localhost|127\.0\.0\.1|[\d.]+):\d+$/.test(origin)) {
+      return callback(null, true);
+    }
+
+    return callback(null, false);
+  },
+  credentials: true
+}));
 app.use(express.json({ limit: "1mb" }));
 app.use(morgan(env.nodeEnv === "production" ? "combined" : "dev"));
 app.use(rateLimit({ windowMs: 15 * 60 * 1000, limit: 300 }));
@@ -25,7 +38,7 @@ app.use("/api", (req, res, next) => {
   res.set("Cache-Control", "no-store");
   next();
 });
-app.use("/uploads", express.static(path.resolve("uploads")));
+app.use("/uploads", express.static(paths.uploadRoot));
 
 app.get("/health", (req, res) => res.json({ ok: true }));
 app.get("/api/v1/docs", (req, res) => res.json(openApiSummary));
